@@ -1,9 +1,9 @@
 ---
 
-# Code for \[Your Paper Title Here]
+# # Code for \[Your Paper Title Here]
 
-This repository contains the code for our paper:
-**"\[Paper Title]"**, accepted/presented at \[Conference/Journal Name, Year].
+# This repository contains the code for our paper:
+# **"\[Paper Title]"**, accepted/presented at \[Conference/Journal Name, Year].
 
 ## Overview
 
