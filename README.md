@@ -1,10 +1,3 @@
----
-
-# # Code for \[Your Paper Title Here]
-
-# This repository contains the code for our paper:
-# **"\[Paper Title]"**, accepted/presented at \[Conference/Journal Name, Year].
-
 ## Overview
 
 We present the implementation for reproducing the results of our work. The pipeline consists of two main stages:
@@ -31,7 +24,6 @@ Make sure the processed dataset follows the required format expected by our trai
 
 We will release the training scripts and configuration files shortly.
 
----
 
 <!-- ## Citation
 
