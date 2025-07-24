@@ -1,0 +1,6 @@
+./.vscode
+./cache_local
+./dataset
+./mathfusion
+./operators/__pycache__
+./prompts/__pycache__
