@@ -2,6 +2,7 @@ from dataflow.utils.storage import FileStorage
 from dataflow.serving import APILLMServing_request, LocalModelLLMServing
 from dataflow.core import LLMServingABC
 from dataflow.operators.pandas_operator import PandasOperator
+from dataflow.operators.generate import AnswerGenerator
 from operators.generate_embedding import GenerateEmbedding
 from operators.question_genenator import QuestionGenerator
 from operators.question_evaluator import QuestionEvaluator
@@ -14,8 +15,8 @@ class MathFusionPipeline():
     def __init__(self, llm_serving: LLMServingABC = None):
         
         self.storage = FileStorage(
-            first_entry_file_name="/mnt/public/data/wongzhenhao/MathQA/dataset/gsm8k_train.jsonl",
-            cache_path="./mathfusion",
+            first_entry_file_name="/mnt/public/data/wongzhenhao/MathQA/dataset/math_train.jsonl",
+            cache_path="./mathfusion/math",
             file_name_prefix="dataflow_cache_step",
             cache_type="jsonl",
         )
@@ -37,6 +38,10 @@ class MathFusionPipeline():
         
         self.generate_embedding = GenerateEmbedding(embedding_serving=embedding_serving)
 
+        self.extract_pair = PandasOperator([
+                        lambda df: df.drop(columns=[col for col in df.columns if "embeddings" in col])
+                    ])
+        
         def find_most_similar_questions(df):
             df = df.dropna(subset=['embeddings']).reset_index(drop=True)
             embeddings = torch.tensor(np.stack(df['embeddings'].values), dtype=torch.float32).cuda()  # shape: (n, d)
@@ -88,6 +93,10 @@ class MathFusionPipeline():
 
         self.matching_most_similar.run(
             storage= self.storage.step(),
+        )
+
+        self.extract_pair.run(
+            storage = self.storage.step(),
         )
 
         self.sequential_fusion.run(
